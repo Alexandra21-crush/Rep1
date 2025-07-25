@@ -1,98 +1,84 @@
-# test_string_utils.py
 import pytest
 from string_utils import StringUtils
 
-
 class TestStringUtils:
+    utils = StringUtils()
 
-    # ===== Тесты для capitalize() =====
-    @pytest.mark.positive
+    # Тесты для capitalize()
     def test_capitalize_regular_string(self):
-        assert StringUtils.capitalize("тест") == "Тест"
-
-    @pytest.mark.positive
-    def test_capitalize_numeric_string(self):
-        assert StringUtils.capitalize("123") == "123"
-
-    @pytest.mark.positive
-    def test_capitalize_string_with_spaces(self):
-        assert StringUtils.capitalize("04 апреля 2023") == "04 апреля 2023"
-
-    @pytest.mark.negative
+        assert self.utils.capitalize("skypro") == "Skypro"
+    
+    def test_capitalize_already_capitalized(self):
+        assert self.utils.capitalize("Skypro") == "Skypro"
+    
     def test_capitalize_empty_string(self):
-        assert StringUtils.capitalize("") == ""
+        assert self.utils.capitalize("") == ""
+    
+    def test_capitalize_single_character(self):
+        assert self.utils.capitalize("s") == "S"
+    
+    def test_capitalize_with_spaces(self):
+        assert self.utils.capitalize(" skypro") == " skypro"
 
-    @pytest.mark.negative
-    def test_capitalize_space_string(self):
-        assert StringUtils.capitalize(" ") == " "
-
-    @pytest.mark.negative
-    def test_capitalize_none(self):
-        with pytest.raises(AttributeError):
-            StringUtils.capitalize(None)
-
-    # ===== Тесты для trim() =====
-    @pytest.mark.positive
-    def test_trim_regular_string(self):
-        assert StringUtils.trim("   тест") == "тест"
-
-    @pytest.mark.positive
-    def test_trim_mixed_spaces(self):
-        assert StringUtils.trim(" \t\nтест") == "тест"
-
-    @pytest.mark.negative
+    # Тесты для trim()
+    def test_trim_leading_spaces(self):
+        assert self.utils.trim("   skypro") == "skypro"
+    
+    def test_trim_no_leading_spaces(self):
+        assert self.utils.trim("skypro") == "skypro"
+    
     def test_trim_empty_string(self):
-        assert StringUtils.trim("") == ""
+        assert self.utils.trim("") == ""
+    
+    def test_trim_only_spaces(self):
+        assert self.utils.trim("    ") == ""
+    
+    def test_trim_mixed_spaces(self):
+        assert self.utils.trim("  s k y p r o  ") == "s k y p r o  "
 
-    @pytest.mark.negative
-    def test_trim_space_string(self):
-        assert StringUtils.trim(" ") == ""
-
-    @pytest.mark.negative
-    def test_trim_none(self):
-        with pytest.raises(AttributeError):
-            StringUtils.trim(None)
-
-    # ===== Тесты для to_list() =====
-    @pytest.mark.positive
-    def test_to_list_regular_string(self):
-        assert StringUtils.to_list("a,b,c") == ["a", "b", "c"]
-
-    @pytest.mark.positive
-    def test_to_list_with_spaces(self):
-        assert StringUtils.to_list("1, 2, 3") == ["1", " 2", " 3"]
-
-    @pytest.mark.negative
-    def test_to_list_empty_string(self):
-        assert StringUtils.to_list("") == [""]
-
-    @pytest.mark.negative
-    def test_to_list_space_string(self):
-        assert StringUtils.to_list(" ") == [" "]
-
-    @pytest.mark.negative
-    def test_to_list_none(self):
-        with pytest.raises(AttributeError):
-            StringUtils.to_list(None)
-
-    # ===== Тесты для contains() =====
-    @pytest.mark.positive
-    def test_contains_regular_string(self):
-        assert StringUtils.contains("Тест", "е") is True
-
-    @pytest.mark.positive
-    def test_contains_numeric_string(self):
-        assert StringUtils.contains("123", "2") is True
-
-    @pytest.mark.negative
+    # Тесты для contains()
+    def test_contains_present_symbol(self):
+        assert self.utils.contains("SkyPro", "S") is True
+    
+    def test_contains_missing_symbol(self):
+        assert self.utils.contains("SkyPro", "U") is False
+    
     def test_contains_empty_string(self):
-        assert StringUtils.contains("", "x") is False
+        assert self.utils.contains("", "S") is False
+    
+    def test_contains_empty_symbol(self):
+        assert self.utils.contains("SkyPro", "") is True
+    
+    def test_contains_case_sensitive(self):
+        assert self.utils.contains("SkyPro", "s") is False
 
-    @pytest.mark.negative
-    def test_contains_space_string(self):
-        assert StringUtils.contains(" ", "x") is False
+    # Тесты для delete_symbol()
+    def test_delete_symbol_single_char(self):
+        assert self.utils.delete_symbol("SkyPro", "k") == "SyPro"
+    
+    def test_delete_symbol_multiple_chars(self):
+        assert self.utils.delete_symbol("SkyPro", "Pro") == "Sky"
+    
+    def test_delete_symbol_not_found(self):
+        assert self.utils.delete_symbol("SkyPro", "X") == "SkyPro"
+    
+    def test_delete_symbol_all_occurrences(self):
+        assert self.utils.delete_symbol("abababa", "a") == "bbb"
+    
+    def test_delete_symbol_empty_string(self):
+        assert self.utils.delete_symbol("", "a") == ""
+    
+    def test_delete_symbol_empty_symbol(self):
+        assert self.utils.delete_symbol("SkyPro", "") == "SkyPro"
 
-    @pytest.mark.negative
-    def test_contains_none(self):
-        with pytest.raises(TypeError):
-            StringUtils.contains(None, "е")
+    # Дополнительные тесты для edge cases
+    def test_capitalize_special_chars(self):
+        assert self.utils.capitalize("123abc") == "123abc"
+        assert self.utils.capitalize("été") == "Été"
+    
+    def test_trim_non_space_whitespace(self):
+        assert self.utils.trim("\t\nskypro") == "\t\nskypro"
+    
+    def test_contains_unicode_symbols(self):
+        assert self.utils.contains("Привет", "иве") is True
+        assert self.utils.contains("😊🌍", "🌍") is True

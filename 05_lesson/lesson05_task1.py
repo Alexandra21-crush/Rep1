@@ -16,4 +16,4 @@ driver.find_element(
 ).click()
 time.sleep(5)
 
-# driver.quit()
+driver.quit()

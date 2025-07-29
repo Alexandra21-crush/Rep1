@@ -18,6 +18,6 @@ time.sleep(5)
 driver.find_element(By.XPATH, '//button[@type="submit"]').click()
 time.sleep(5)
 green_element = driver.find_element(By.XPATH, '//img')
-print(green_element.get_property("alt"))
+print(driver.find_element(By.ID, "flash").text)
 
 driver.quit()

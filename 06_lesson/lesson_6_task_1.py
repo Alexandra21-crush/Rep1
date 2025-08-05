@@ -7,7 +7,7 @@ driver = webdriver.Chrome(
     service=ChromeService(ChromeDriverManager().install())
 )
 
-driver.implicitly_wait(21)
+driver.implicitly_wait(10)
 
 driver.get("http://www.uitestingplayground.com/ajax")
 driver.find_element(By.CSS_SELECTOR, "#ajaxButton").click()

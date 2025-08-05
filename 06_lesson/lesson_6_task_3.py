@@ -7,15 +7,12 @@ driver = webdriver.Chrome(
     service=ChromeService(ChromeDriverManager().install())
 )
 
-driver.implicitly_wait(21)
+driver.get(
+    "https://bonigarcia.dev/selenium-webdriver-java/loading-images.html"
+)
+driver.implicitly_wait(10)
+picture = driver.find_element(By.ID, "award")
+print(picture.get_attribute("src"))
 
-driver.get("http://uitestingplayground.com/textinput")
-input_box = driver.find_element(By.CLASS_NAME, "form-control")
-input_box.send_keys("SkyPro")
-
-blue_button = driver.find_element(By.ID, "updatingButton")
-blue_button.click()
-text = blue_button.text
-print(text)
 
 driver.quit()
